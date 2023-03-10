@@ -1,12 +1,43 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+// Import the functions you need from the SDKs you need
+
+import { getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword } from 'firebase';
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from './firebaseConfig';
+const storage = firebase.storage();
+
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const db = firebase.firestore();
+
+// Auth ve Storage örneklerini alın
+const auth = firebase.auth();
+
+// Dışa aktar
+export { db };
+
+// Auth ve Storage örneklerini de dışa aktarabilirsiniz
+export { auth, storage };
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LandingScreen from './components/auth/Landing';
+import RegisterScreen from './components/auth/Register';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Landing">
+        <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
